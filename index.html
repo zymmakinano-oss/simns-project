@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SIM-NS – Step-Up Increment Monitoring and Notification System</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div id="toast-container"></div>
+
+<!-- ═══════════════════════════════════════════════════════
+     LOGIN SCREEN
+════════════════════════════════════════════════════════ -->
+<div id="screen-login">
+  <div class="login-overlay"></div>
+
+  <div class="login-card">
+
+    <!-- LEFT PANEL -->
+    <div class="login-left">
+      <div class="login-left-overlay"></div>
+      <div class="login-left-inner">
+        <img class="login-seal"
+          src="https://hercules-cdn.com/file_8NHxR8iJksOt7sP5hYD0OMYu"
+          alt="BIR Seal" />
+        <p style="font-size:11px;opacity:.80">Republic of the Philippines</p>
+        <p style="font-size:11px;opacity:.70">Bureau of Internal Revenue</p>
+        <p class="login-simns">SIM-NS</p>
+        <div class="login-divider"></div>
+        <p class="login-sys-label">Step-Up Increment<br />Monitoring and Notification System</p>
+
+        <!-- Demo credentials box -->
+        <div class="creds-box">
+          <div class="creds-header">
+            <span>👤</span> Demo Credentials
+          </div>
+
+          <!-- Username row -->
+          <div class="creds-row">
+            <span class="creds-label">Username:</span>
+            <div class="creds-value-wrap">
+              <span class="creds-value">hradmin</span>
+              <button class="btn-copy-cred" onclick="copyCredential('hradmin','user')" title="Copy username">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              </button>
+              <span id="copied-badge-user" class="copied-badge hidden">Copied!</span>
+            </div>
+          </div>
+
+          <!-- Password row -->
+          <div class="creds-row">
+            <span class="creds-label">Password:</span>
+            <div class="creds-value-wrap">
+              <span class="creds-value">simns2026</span>
+              <button class="btn-copy-cred" onclick="copyCredential('simns2026','pass')" title="Copy password">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              </button>
+              <span id="copied-badge-pass" class="copied-badge hidden">Copied!</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="login-badges">
+          <span>🔒 Secure Access</span>
+          <span>🛡 Authorized Use Only</span>
+          <span>📊 System Monitoring</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="login-right">
+
+      <!-- ── VIEW: LOGIN ── -->
+      <div id="lv-login">
+        <p class="login-welcome-title">Welcome Back!</p>
+        <p class="login-welcome-sub">Login to your BIR Internal System Account</p>
+        <div class="login-accent-bar" style="margin:4px 0 8px"></div>
+
+        <div id="l-error" class="login-error hidden"></div>
+
+        <div class="form-field">
+          <label for="l-username">Username</label>
+          <div class="input-wrap">
+            <span class="input-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </span>
+            <input class="field-input" id="l-username" type="text" placeholder="Enter your username" autocomplete="username" />
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="l-password">Password</label>
+          <div class="input-wrap">
+            <span class="input-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </span>
+            <input class="field-input pr" id="l-password" type="password" placeholder="Enter your password" autocomplete="current-password" />
+            <button class="input-icon-right" id="pw-toggle" type="button">
+              <span id="pw-eye">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <div class="login-row" style="margin: 4px 0 8px">
+          <label><input type="checkbox" /> Remember me</label>
+          <button class="login-link" id="l-forgot-link">Forgot Password?</button>
+        </div>
+
+        <button class="btn-primary" id="l-login-btn">Login</button>
+
+        <div class="notice-box amber" style="margin-top:4px">
+          <img src="https://hercules-cdn.com/file_8NHxR8iJksOt7sP5hYD0OMYu" alt="" style="width:24px;height:24px;border-radius:50%;flex-shrink:0" />
+          <div>
+            <p class="notice-title">Authorized HR personnel only.</p>
+            <p class="notice-body">Unauthorized access to this system is prohibited and will be logged in accordance with RA 10173 (Data Privacy Act).</p>
+          </div>
+        </div>
+
+        <p class="login-footer-note">
+          Bureau of Internal Revenue · Internal System Portal <strong>v1.0</strong><br />
+          © 2026 All Rights Reserved
+        </p>
+      </div>
+
+      <!-- ── VIEW: FORGOT ── -->
+      <div id="lv-forgot" class="hidden">
+        <button class="back-btn" id="lv-forgot-back">←</button>
+        <p class="login-welcome-title">Account Verification</p>
+        <div class="login-accent-bar" style="margin:4px 0 8px"></div>
+        <p class="login-welcome-sub">Enter your Employee ID to receive a secure verification code</p>
+
+        <div class="form-field" style="margin-top:8px">
+          <label>Employee ID / Username</label>
+          <div class="input-wrap">
+            <span class="input-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </span>
+            <input class="field-input" type="text" placeholder="dir*****@bir.gov.ph" />
+          </div>
+        </div>
+
+        <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:12px;text-align:center;margin-bottom:8px">
+          <p style="font-size:11px;color:#6b7280">*A secure verification code will be sent to your registered official email:</p>
+          <p style="font-size:13px;font-weight:500;color:#153084;margin-top:4px">dir*****@bir.gov.ph</p>
+        </div>
+
+        <button class="btn-primary" id="forgot-send-btn">✉ Send Verification Code</button>
+      </div>
+
+      <!-- ── VIEW: OTP ── -->
+      <div id="lv-otp" class="hidden">
+        <button class="back-btn" id="lv-otp-back">←</button>
+
+        <div id="otp-success-msg" class="notice-box green" style="margin-bottom:8px">
+          <div>
+            <p class="notice-title">Success</p>
+            <p class="notice-body">A 6-digit verification code has been sent. It will expire in 5 minutes. (Demo OTP: <strong>1 2 3 4 5 6</strong>)</p>
+          </div>
+        </div>
+
+        <div id="otp-locked-msg" class="notice-box red hidden" style="margin-bottom:8px">
+          <div>
+            <p class="notice-title">Maximum Attempts Reached</p>
+            <p class="notice-body">You have reached the maximum number of unsuccessful attempts. For your security, this feature is temporarily locked.</p>
+          </div>
+        </div>
+
+        <div id="otp-err" class="login-error hidden" style="margin-bottom:8px"></div>
+
+        <!-- Step 1 -->
+        <div class="step-row" style="margin-bottom:12px">
+          <div class="step-num">1</div>
+          <div style="flex:1">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+              <p class="step-label">Enter the 6-Digit Code</p>
+              <span class="timer" id="otp-timer">3:45</span>
+            </div>
+            <p class="step-sub" style="margin-bottom:10px">We sent a verification code to your selected method.</p>
+            <div class="otp-grid" id="otp-digits"></div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step-row" style="margin-bottom:12px">
+          <div class="step-num">2</div>
+          <div>
+            <p class="step-label">Verify and Proceed</p>
+            <p class="step-sub">Enter the 6-digit code to verify your identity and continue.</p>
+          </div>
+        </div>
+
+        <button class="btn-primary" id="otp-verify-btn" style="margin-bottom:6px">✉ Verify Code</button>
+        <button class="btn-primary" id="otp-submit-btn" style="display:none">✉ Verify Code</button>
+
+        <p id="otp-resend-row" style="font-size:12px;color:#6b7280;text-align:center">
+          Didn't get the code? Resend in <button class="login-link" style="font-size:12px">59s</button>
+        </p>
+
+        <div id="otp-locked-actions" class="hidden" style="margin-top:8px">
+          <button class="btn-outline-primary" id="otp-return-btn" style="margin-bottom:10px">← Return to Login</button>
+          <div class="notice-box amber">
+            <span style="font-size:18px;flex-shrink:0">🛡</span>
+            <div>
+              <p class="notice-title">Account Recovery Notice</p>
+              <p class="notice-body">For security purposes, automated recovery attempts for this ID have been locked. Please contact your designated Regional HR Administration Office or submit an IT Helpdesk ticket.</p>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+                <button style="background:#d97706;color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer">✉ Contact HR Admin</button>
+                <span style="font-size:11px;color:#b45309;font-weight:500">hr.admin@bir.gov.ph</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /login-right -->
+  </div><!-- /login-card -->
+</div><!-- /screen-login -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     APP SCREEN
+════════════════════════════════════════════════════════ -->
+<div id="screen-app">
+
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="app-header-top">
+      <div>
+        <p class="brand-title">SIM - NS</p>
+        <p class="brand-sub">Step - Up Increment Monitoring and Notification System</p>
+        <p class="brand-org">Bureau of Internal Revenue · RDO 103</p>
+      </div>
+      <div class="header-right">
+        <div class="header-user">
+          <span class="user-label">Logged in as</span>
+          <span class="user-name">hradmin</span>
+        </div>
+        <button class="btn-notif" id="header-notif-btn" title="Notifications">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="notif-badge" id="header-notif-badge" style="display:none">0</span>
+        </button>
+        <button class="btn-logout" id="logout-btn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Logout
+        </button>
+      </div>
+    </div>
+
+    <nav class="app-nav">
+      <button class="nav-tab" data-page="dashboard">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </button>
+      <button class="nav-tab" data-page="employees">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Employee Data
+      </button>
+      <button class="nav-tab" data-page="increment-tracking">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        Increment Tracking
+      </button>
+      <button class="nav-tab" data-page="notifications">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        Notifications
+      </button>
+      <button class="nav-tab" data-page="audit-log">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Audit Log
+      </button>
+    </nav>
+  </header>
+
+  <main class="app-main">
+
+    <!-- ══ DASHBOARD ══ -->
+    <div id="page-dashboard" class="page">
+      <div class="welcome-banner">
+        <div>
+          <p class="wb-title">Welcome back, hradmin!</p>
+          <p class="wb-sub">Step - Up Increment Monitoring and Notification System Dashboard</p>
+          <p class="wb-login" id="wb-login-time"></p>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <p class="wb-date-label">Today's Date</p>
+          <p class="wb-date" id="wb-today"></p>
+        </div>
+      </div>
+
+      <!-- Metric Cards -->
+      <div class="grid-4" style="margin-bottom:14px">
+        <div class="card metric-card">
+          <div class="metric-icon blue">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div><p class="metric-label">Total Employees Recorded</p><p class="metric-value" id="metric-total">0</p><p class="metric-sub">Active employee records</p></div>
+        </div>
+        <div class="card metric-card">
+          <div class="metric-icon amber">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <div><p class="metric-label">Employees Due This Month</p><p class="metric-value" id="metric-due">0</p><p class="metric-sub">Within 30 days</p></div>
+        </div>
+        <div class="card metric-card">
+          <div class="metric-icon red">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+          </div>
+          <div><p class="metric-label">Employees Already Flagged</p><p class="metric-value" id="metric-flagged">0</p><p class="metric-sub">Requires immediate action</p></div>
+        </div>
+        <div class="card metric-card">
+          <div class="metric-icon purple">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          </div>
+          <div><p class="metric-label">Recent System Alerts</p><p class="metric-value" id="metric-unread">0</p><p class="metric-sub">Latest activities logged</p></div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="card card-p" style="margin-bottom:14px">
+        <div class="section-header">
+          <span class="section-title">Quick Actions</span>
+          <button class="btn btn-ghost" id="qa-generate-report" style="font-size:12px;padding:5px 10px">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Generate Report
+          </button>
+        </div>
+        <div class="grid-4">
+          <button class="quick-action" id="qa-add-employee">
+            <div class="qa-icon blue"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg></div>
+            <p class="qa-label">Add Employee</p><p class="qa-sub">Register new employee</p>
+          </button>
+          <button class="quick-action" id="qa-view-records">
+            <div class="qa-icon slate"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></div>
+            <p class="qa-label">View Records</p><p class="qa-sub">Browse employee data</p>
+          </button>
+          <button class="quick-action" id="qa-check-eligibility">
+            <div class="qa-icon green"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+            <p class="qa-label">Check Eligibility</p><p class="qa-sub">Monitor increments</p>
+          </button>
+          <button class="quick-action" id="qa-audit-log">
+            <div class="qa-icon orange"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+            <p class="qa-label">View Audit Log</p><p class="qa-sub">System activity log</p>
+          </button>
+        </div>
+      </div>
+
+      <!-- Bottom grid -->
+      <div class="grid-2" style="margin-bottom:14px">
+        <div class="card card-p">
+          <div class="section-header">
+            <span class="section-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/><path d="M15 8h.01"/></svg>
+              Recent System Alerts
+            </span>
+            <button class="section-link" id="dash-view-all-alerts">View All</button>
+          </div>
+          <ul id="recent-alerts-list"></ul>
+        </div>
+        <div class="card card-p">
+          <div class="section-header">
+            <span class="section-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              Upcoming Deadlines
+            </span>
+            <button class="section-link" id="dash-view-all-deadlines">View All</button>
+          </div>
+          <ul id="upcoming-deadlines-list"></ul>
+        </div>
+      </div>
+
+      <div class="status-ok">
+        <span class="status-dot"></span>
+        <div><p class="status-title">System Status: Operational</p><p class="status-sub" id="status-time"></p></div>
+      </div>
+
+      <p class="page-footer">SIM-NS v1.0 · College of Computing and Information Sciences · CSC 106: Software Engineering<br/>Compliant with RA 10173 (Data Privacy Act of 2012)</p>
+    </div><!-- /dashboard -->
+
+
+    <!-- ══ EMPLOYEES ══ -->
+    <div id="page-employees" class="page">
+      <div class="page-header">
+        <div>
+          <h2 class="page-title">Employee Data Management</h2>
+          <p class="page-sub">Centralized database for personnel records · <span id="emp-count"></span></p>
+        </div>
+        <button class="btn btn-blue" id="emp-add-btn">+ Add Employee</button>
+      </div>
+
+      <div class="search-wrap" style="max-width:420px">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input class="field-input no-icon" id="emp-search" type="text" placeholder="Search by name or position…" />      </div>
+
+      <div class="card" style="overflow:hidden">
+        <div id="emp-empty" class="empty-state hidden">
+          <div class="empty-icon-wrap">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <p class="empty-title" id="emp-empty-title">No employees yet</p>
+          <p class="empty-desc"  id="emp-empty-desc">Add your first employee to get started</p>
+          <button class="btn btn-blue" id="emp-empty-add-btn">+ Add Employee</button>
+        </div>
+        <div id="emp-table-wrap" class="overflow-x-auto">
+          <table>
+            <thead><tr>
+              <th>Employee</th><th>Status</th><th>Salary Grade</th>
+              <th>Date Hired</th><th>Last Step-Up</th><th>Promotions</th><th>Actions</th>
+            </tr></thead>
+            <tbody id="emp-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div><!-- /employees -->
+
+
+    <!-- ══ INCREMENT TRACKING ══ -->
+    <div id="page-increment-tracking" class="page">
+      <div class="page-header">
+        <div>
+          <h2 class="page-title">Increment Tracking</h2>
+          <p class="page-sub">Monitor step-up increment timelines for all employees</p>
+        </div>
+      </div>
+      <div class="card" style="overflow:hidden">
+        <div id="inc-empty" class="empty-state hidden">
+          <div class="empty-icon-wrap">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          </div>
+          <p class="empty-title">No tracking data</p>
+          <p class="empty-desc">Add employees to start tracking step-up increments</p>
+        </div>
+        <div id="inc-table-wrap" class="overflow-x-auto">
+          <table>
+            <thead><tr>
+              <th>#</th><th>Employee</th><th>Date Hired</th><th>Last Step-Up</th>
+              <th>Progress (3-yr cycle)</th><th>Next Step-Up</th><th>Status</th>
+            </tr></thead>
+            <tbody id="inc-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div><!-- /increment-tracking -->
+
+
+    <!-- ══ NOTIFICATIONS ══ -->
+    <div id="page-notifications" class="page">
+      <div class="page-header">
+        <div>
+          <h2 class="page-title">Proactive Notification System</h2>
+          <p class="page-sub">Automated alerts for upcoming and eligible increments</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span id="notif-unread-badge" style="background:#1a1a2e;color:#fff;font-size:12px;font-weight:600;padding:3px 12px;border-radius:99px">0 Unread</span>
+        </div>
+      </div>
+      <div class="grid-2" style="margin-bottom:18px">
+        <div class="card card-p" style="display:flex;justify-content:space-between;align-items:center">
+          <div style="display:flex;align-items:center;gap:12px;font-size:13px;font-weight:500">
+            <div class="notif-summary-icon red"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+            Eligible Now – Requires Action
+          </div>
+          <span style="font-size:30px;font-weight:700" id="notif-eligible-count">0</span>
+        </div>
+        <div class="card card-p" style="display:flex;justify-content:space-between;align-items:center">
+          <div style="display:flex;align-items:center;gap:12px;font-size:13px;font-weight:500">
+            <div class="notif-summary-icon yellow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#eab308" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="9 16 11 18 15 14"/></svg></div>
+            Due Within 30 Days
+          </div>
+          <span style="font-size:30px;font-weight:700" id="notif-due-count">0</span>
+        </div>
+      </div>
+      <p style="font-size:13px;font-weight:600;margin-bottom:12px">Recent Activity</p>
+      <div id="notif-empty" class="empty-state hidden">
+        <div class="empty-icon-wrap"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+        <p class="empty-title">No notifications</p>
+        <p class="empty-desc">Use "Check Eligibility" on the dashboard to generate alerts</p>
+      </div>
+      <div id="notif-list"></div>
+    </div><!-- /notifications -->
+
+
+    <!-- ══ AUDIT LOG ══ -->
+    <div id="page-audit-log" class="page">
+      <div class="page-header">
+        <div>
+          <h2 class="page-title">Digital Audit and Compliance Log</h2>
+          <p class="page-sub">Non-editable record of all system activities</p>
+        </div>
+        <button class="btn btn-dark" id="audit-export-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export Report
+        </button>
+      </div>
+      <div class="grid-3" style="margin-bottom:18px">
+        <div class="card metric-card">
+          <div style="width:40px;height:40px;border-radius:50%;background:#f3e8ff;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9333ea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+          <div><p class="metric-label">Total Edit Entries</p><p class="metric-value" id="audit-total">0</p></div>
+        </div>
+        <div class="card metric-card">
+          <div style="width:40px;height:40px;border-radius:50%;background:#dcfce7;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+          <div><p class="metric-label">Increments Approved</p><p class="metric-value" id="audit-approved">0</p></div>
+        </div>
+        <div class="card metric-card">
+          <div style="width:40px;height:40px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <div><p class="metric-label">Employee Changes</p><p class="metric-value" id="audit-changes">0</p></div>
+        </div>
+      </div>
+      <p style="font-size:13px;font-weight:600;margin-bottom:12px">Recent Activity</p>
+      <div id="audit-empty" class="empty-state hidden">
+        <div class="empty-icon-wrap"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+        <p class="empty-title">No audit logs</p>
+        <p class="empty-desc">System actions will be recorded here</p>
+      </div>
+      <div id="audit-list"></div>
+      <div style="text-align:center;padding-top:12px">
+        <button class="btn btn-ghost hidden" id="audit-load-more">Load More</button>
+      </div>
+      <div class="notice-amber">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <div>
+          <p class="notice-amber-title">Audit Log Security Notice</p>
+          <p class="notice-amber-body">All entries in this audit log are non-editable and tamper-proof, ensuring full compliance with RA 10173 (Data Privacy Act) and maintaining complete transparency of all system activities and salary grade changes.</p>
+        </div>
+      </div>
+    </div><!-- /audit-log -->
+
+  </main>
+</div><!-- /screen-app -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     EMPLOYEE MODAL
+════════════════════════════════════════════════════════ -->
+<div id="modal-employee" class="modal-backdrop hidden">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 class="modal-title" id="emp-modal-title">Add New Employee</h3>
+      <button class="modal-close" id="modal-employee-close">✕</button>
+    </div>
+    <form id="emp-form">
+      <div class="field"><label>Employee Name</label><input class="field-inp" id="emp-name" type="text" placeholder="e.g. Maria Santos" /><span class="field-err" id="err-name"></span></div>
+      <div class="field"><label>Position</label><input class="field-inp" id="emp-position" type="text" placeholder="e.g. Revenue Officer III" /><span class="field-err" id="err-position"></span></div>
+      <div class="form-row">
+        <div class="field"><label>Salary Grade</label><input class="field-inp" id="emp-sg" type="number" min="1" max="33" placeholder="e.g. 18" /><span class="field-err" id="err-sg"></span></div>
+        <div class="field"><label>Date Hired</label><input class="field-inp" id="emp-hired" type="date" /><span class="field-err" id="err-hired"></span></div>
+      </div>
+      <div class="field"><label>Last Step-Up Date <span style="color:#9ca3af;font-weight:400">(optional)</span></label><input class="field-inp" id="emp-stepup" type="date" /></div>
+      <div class="field"><label>Promotion History <span style="color:#9ca3af;font-weight:400">(optional)</span></label><input class="field-inp" id="emp-promo" type="text" placeholder="e.g. 3 recorded" /></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" id="emp-modal-cancel">Cancel</button>
+        <button type="submit" class="btn btn-blue" id="emp-modal-submit">Add Employee</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     TERMINATE MODAL
+════════════════════════════════════════════════════════ -->
+<div id="modal-terminate" class="modal-backdrop hidden">
+  <div class="modal-box modal-sm">
+    <div class="modal-header">
+      <h3 class="modal-title">Confirm Termination</h3>
+      <button class="modal-close" id="modal-terminate-close">✕</button>
+    </div>
+    <p style="font-size:13px;color:#4b5563;margin:4px 0 20px">
+      Are you sure you want to terminate <strong id="terminate-name"></strong>? This action will remove them from the active employee list.
+    </p>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-ghost" id="terminate-cancel">Cancel</button>
+      <button type="button" class="btn btn-red"   id="terminate-confirm">Yes, Terminate</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
