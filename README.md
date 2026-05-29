@@ -57,5 +57,5 @@ Password: simns2026
 
 # **4. Link to the Prototype**
 
-Live Link: \[Insert GitHub Pages URL here, e.g., https://your-username.github.io/simns-project]
+Live Link: \[https://github.com/zymmakinano-oss/simns-project]
 
